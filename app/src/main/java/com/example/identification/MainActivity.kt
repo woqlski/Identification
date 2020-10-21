@@ -1,20 +1,45 @@
 package com.example.identification
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        numberSeekBar.progress = 2
+        numberSeekBar.max = 100
+        numberInput.text = "2"
+
         simulateButton.setOnClickListener {
-            val number = numberInput.text
             val intent = Intent(this, ResultActivity::class.java)
-            intent.putExtra("number", number.toString().toInt())
+            intent.putExtra("number", numberSeekBar.progress)
             startActivity(intent)
         }
+
+        numberSeekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+
+            override fun onProgressChanged(
+                seekBar: SeekBar,
+                progress: Int,
+                fromUser: Boolean
+            ) {
+                if (progress < 3) numberSeekBar.progress = 2
+                numberInput.text = progress.toString()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+
     }
 }
