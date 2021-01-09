@@ -8,6 +8,7 @@ import com.jjoe64.graphview.LegendRenderer
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.activity_result.*
+import java.util.concurrent.ThreadLocalRandom
 import kotlin.math.pow
 
 
@@ -22,6 +23,8 @@ class ResultActivity : AppCompatActivity() {
     private var bCalc = 0.0
     private var q = 0.0
     private var n = 2
+    private var min = -10
+    private var max = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +32,10 @@ class ResultActivity : AppCompatActivity() {
         setContentView(R.layout.activity_result)
 
         n = intent.getIntExtra("number", 2)
+
+        min = intent.getIntExtra("min", -10)
+        max = intent.getIntExtra("max", 10)
+
         generateFunction()
         identifyFunction()
         displayGraph()
@@ -36,7 +43,8 @@ class ResultActivity : AppCompatActivity() {
 
     private fun generateFunction() {
         u = DoubleArray(n) { i -> i.toDouble() }
-        y = DoubleArray(n) { (-10..10).random().toDouble() }
+//        y = DoubleArray(n) { (-1000..1000).random()/100.toDouble() }
+        y = DoubleArray(n) { (min*100..max*100).random()/100.toDouble() }
 //        y = DoubleArray(n) { i -> ((i)*2 + 3).toDouble()}
     }
 
@@ -74,7 +82,7 @@ class ResultActivity : AppCompatActivity() {
         graph.addSeries(generated)
 
         val sign = if (bCalc >= 0) "+" else ""
-        calculated.title = "Identificated: y=%.2f*x$sign%.2f".format(aCalc, bCalc)
+        calculated.title = "Identificated: y=%.3f*x$sign%.3f".format(aCalc, bCalc)
         calculated.color = Color.RED
         calculated.thickness = 10
         graph.addSeries(calculated)

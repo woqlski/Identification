@@ -18,8 +18,14 @@ class MainActivity : AppCompatActivity() {
         numberInput.text = "2"
 
         simulateButton.setOnClickListener {
+            val minimum = min.text.toString()
+            val minVal = Integer.valueOf(minimum)
+            val maximum = max.text.toString()
+            val maxVal = Integer.valueOf(maximum)
             val intent = Intent(this, ResultActivity::class.java)
             intent.putExtra("number", numberSeekBar.progress)
+            intent.putExtra("min", minVal)
+            intent.putExtra("max", maxVal)
             startActivity(intent)
         }
 
